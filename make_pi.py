@@ -10,6 +10,12 @@ from lib.reactor.utils import divide_into_molecules
 from lib.reactor.utils import set_molecule_id_for_h
 from lib.writer.xml_writer import write_xml
 
+description="""PI maker
+tests/pi: python ../../make_pi.py -X monomer_pi.xml -M 'A,diamine,c1cc(N)ccc1Oc1ccc(N)cc1' 'B,dianhydride,O=c2oc(=O)c3cc1c(=O)oc(=O)c1cc23' -F opls
+Parallel over molecules.
+Therefore parallelization is not important if whole system is one huge molecule.
+"""
+
 cg_sys, cg_mols, monomers, box, xml = parse()
 reactor = ReactorPI(monomers)
 reactions = xml.data.get("di")
