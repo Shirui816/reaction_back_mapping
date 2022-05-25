@@ -8,6 +8,11 @@ from lib.parse import parse
 from lib.reactor.utils import set_molecule_id_for_h
 from lib.writer.xml_writer import write_xml
 
+description="""CE maker
+tests/ce: python ../../make_ce.py -X monomerCG.xml -M 'A,A,c1cc(OC#N)ccc1C(C)(C)c1ccc(OC#N)cc1' -F opls
+"""
+
+
 cg_sys, cg_mols, monomers, box, xml = parse()
 reactor = ReactorCE(monomers)
 dimers = xml.data.get("di")
