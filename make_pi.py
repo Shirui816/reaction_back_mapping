@@ -10,7 +10,7 @@ from lib.reactor.utils import divide_into_molecules
 from lib.reactor.utils import set_molecule_id_for_h
 from lib.writer.xml_writer import write_xml
 
-description="""PI maker
+description = """PI maker
 tests/pi: python ../../make_pi.py -X monomer_pi.xml -M 'A,diamine,c1cc(N)ccc1Oc1ccc(N)cc1' 'B,dianhydride,O=c2oc(=O)c3cc1c(=O)oc(=O)c1cc23' -F opls
 Parallel over molecules.
 Therefore parallelization is not important if whole system is one huge molecule.
@@ -32,10 +32,12 @@ aa_mols_h = [Chem.AddHs(m) for m in aa_mols]
 aa_mols_h = [set_molecule_id_for_h(mh) for mh in aa_mols_h]
 job_lst = aa_mols_h
 
+defaults = {"O": "@atom:178", "N": "@atom239"}
+
 
 def processing(i):
     molecule = job_lst[i]
-    plm_h_ff, bonds, angles, dihedrals = ff(molecule)
+    plm_h_ff, bonds, angles, dihedrals = ff(molecule, defaults=defaults)
     write_xml(plm_h_ff, box, bonds, angles, dihedrals, '%06d' % i)
 
 
