@@ -27,7 +27,7 @@ def generate_feature_defn(fpath):
         for line in [line.strip() for line in infile if line.strip()]:
             if line[0] != '*':
                 el, atomname, typename, patt, lttype, chg, desc = [el.strip() for el in line.split("|")]
-                info[lttype] = (atomname, typename, chg)
+                info[lttype] = (atomname, typename, chg, desc)
                 # write lttype, SMARTS to feature definintion file
                 # NOTE: using feature family to store the atom names is dangerous
                 # because rdkit won't assign mutliple features in same family.
@@ -42,20 +42,21 @@ def generate_feature_defn(fpath):
     return info, fdefn
 
 
-def ff(molecule):
+def ff(molecule, **kwargs):
     info, fdefn = generate_feature_defn(opls_tpl_path)
 
     factory = Chem.ChemicalFeatures.BuildFeatureFactoryFromString(fdefn)
     features = factory.GetFeaturesForMol(molecule)
 
-    [molecule.GetAtomWithIdx(f.GetAtomIds()[0]).SetProp('AtomType', f.GetType()) for f in features];
+    [molecule.GetAtomWithIdx(f.GetAtomIds()[0]).SetProp('AtomType', f.GetType()) for f in features]
+    defaults = kwargs['defaults']
 
     for atom in molecule.GetAtoms():
         try:
             # print("Atom {0} has {1}".format(at.GetIdx(), at.GetProp('AtomType')))
             _ = atom.GetProp("AtomType")
         except KeyError:
-            print("Atom {0}:{1} does not have an assigned atom type!".format(atom.GetIdx(), atom.GetSymbol()))
+            # print("Atom {0}:{1} does not have an assigned atom type!".format(atom.GetIdx(), atom.GetSymbol()))
             _m = Chem.RWMol()
             i_a = count = 0
             _m.AddAtom(atom)
@@ -73,13 +74,18 @@ def ff(molecule):
                         _m.AddBond(j, k,
                                    molecule.GetBondBetweenAtoms(_nbr_atom.GetIdx(), nbr_atom.GetIdx()).GetBondType())
             smiles = Chem.MolToSmiles(_m)
-            print("Chemical env of atom {0}:{1}: {2}".format(atom.GetIdx(), atom.GetSymbol(), smiles))
+            msg = "---------------------------------------------------------\n" \
+                  "Chemical env of atom {0}({1}) is\n\t{2}\nType is not found from database, set manually as\n\t{3}"
             # default = input("Enter default atom type (@atom:xxx): ")
             # at.SetProp("AtomType", default)
-            if atom.GetAtomicNum() == 8:
-                atom.SetProp("AtomType", "@atom:702")
-            if atom.GetAtomicNum() == 7:
-                atom.SetProp("AtomType", "@atom:708")
+            s = "*** NO DEFAULT TYPE ***"
+            if not defaults is None:
+                if not defaults.get(atom.GetSymbol()) is None:
+                    atom.SetProp("AtomType", defaults.get("O"))
+                    dt = defaults.get("O")
+                    s = info[dt][0] + ", " + info[dt][3]
+            print(msg.format(atom.GetIdx(), atom.GetSymbol(), smiles, s))
+
             # TODO: generate SMARTS of un-typed atoms, set default for all cases.
 
     sum_of_charge = 0
