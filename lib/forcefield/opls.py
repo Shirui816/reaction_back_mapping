@@ -4,7 +4,7 @@ import warnings
 
 from rdkit import Chem
 
-"""
+__doc__ = """
 Ported from  asteeves/rdlt
 """
 
