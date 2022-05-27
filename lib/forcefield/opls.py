@@ -4,6 +4,10 @@ import warnings
 
 from rdkit import Chem
 
+"""
+Ported from  asteeves/rdlt
+"""
+
 this_dir, this_filename = os.path.split(__file__)
 opls_tpl_path = os.path.join(this_dir, "assets", "opls", "STaGE_opls_tomoltemplate_opls.txt")
 opls_bonded_itp = os.path.join(this_dir, "assets", "opls", "bonded.itp")  # from gromacs
