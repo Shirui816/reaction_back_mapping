@@ -16,12 +16,12 @@ def parse():
     )
 
     # monomer_name is dump, it should be found automatically.
-    arg_parser.add_argument('-M', '--monomers',
+    arg_parser.add_argument('-M', '--molecules',
                             nargs='+',
-                            help="monomer with <cg_type>,<monomer_name>,<smiles>...",
-                            dest="monomers",
+                            help="molecules with <cg_type>,<monomer_name>,<smiles>...",
+                            dest="molecules",
                             type=str,
-                            metavar='<cg_type>,<monomer_name>,<smiles>;',
+                            metavar='<cg_type>,<molecule_name>,<smiles>;',
                             required=True,
                             )
 
@@ -44,18 +44,18 @@ def parse():
                             )
 
     args = arg_parser.parse_args()
-    monomers = {}
-    for line in args.monomers:
-        monomer = line.split(',')
-        while '' in monomer:
-            monomer.remove('')
-        monomers[monomer[0]] = {}
-        monomers[monomer[0]]['smiles'] = monomer[-1]
-        monomers[monomer[0]]['reaction_type'] = monomer[1]
+    molecules = {}
+    for line in args.molecules:
+        molecule = line.split(',')
+        while '' in molecule:
+            molecule.remove('')
+        molecules[molecule[0]] = {}
+        molecules[molecule[0]]['smiles'] = molecule[-1]
+        molecules[molecule[0]]['reaction_type'] = molecule[1]
     # TODO: autodetect monomer and automatically choose reactions using SMARTS.
 
     xml = xml_parser(args.xml_file)
     box = (xml.box.lx, xml.box.ly, xml.box.lz, xml.box.xy, xml.box.xz, xml.box.yz)
     box = tuple(map(float, box))
-    cg_sys, cg_mols = read_cg_topology(xml, monomers)
-    return cg_sys, cg_mols, monomers, box, xml
+    cg_sys, cg_mols = read_cg_topology(xml, molecules)
+    return cg_sys, cg_mols, molecules, box, xml
