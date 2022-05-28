@@ -106,8 +106,13 @@ def write_xml(molecule, box, bonds, angles, dihedrals, postfix, program='galamos
         if len(conf.x) != molecule.GetNumAtoms():
             warnings.warn(f"*** configuration generation error! {len(conf.x)} != {molecule.GetNumAtoms()}")
     else:
-        AllChem.EmbedMolecule(molecule, useRandomCoords=True)
-        conf = molecule.GetConformer(0)
+        conf_id = AllChem.EmbedMolecule(molecule, useRandomCoords=True)
+        if conf_id == -1:
+            conf = generate_pos_fragment(molecule)
+            if len(conf.x) != molecule.GetNumAtoms():
+                warnings.warn(f"*** configuration generation error! {len(conf.x)} != {molecule.GetNumAtoms()}")
+        else:
+            conf = molecule.GetConformer(conf_id)
     n_atoms = molecule.GetNumAtoms()
     n_bonds = molecule.GetNumBonds()
     mass = types = opls_type = positions = charge = monomer_id = ''
