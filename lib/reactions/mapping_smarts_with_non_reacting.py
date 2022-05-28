@@ -2,7 +2,8 @@ from collections import namedtuple
 
 from lib.reactions.mapping import map_reacting_atoms
 
-# TODO: this works where SMARTS contains non-reacting atoms.
+# TODO: map on reacting atoms only and ignore the non-reacting atoms.
+# Try update the bond map function.
 
 
 atom_info = namedtuple('atom_info',

@@ -3,6 +3,9 @@ from collections import namedtuple
 # No need to manually change atom type, e.g., is_aromatic, etc. Chem.SanitizeMol will set atom type automatically
 # according to bonds
 
+description = """May shadow the meta-position on benzene, if para-position reaction happens first, the reacting atoms
+contains meta-position (and o-position) C if all atoms in reaction SMARTS are reacting atoms.
+"""
 
 atom_info = namedtuple('atom_info',
                        ('reactant_id', 'reactant_atom_id', 'product_id', 'product_atom_id', 'atomic_number'))
@@ -55,9 +58,9 @@ def map_atoms(products, reacting_map):
                 if ra_dict.get(r_idx) is None:
                     ra_dict[r_idx] = []
                 ra_dict[r_idx].append(r_aidx)
-            else:
-                r_idx = a.GetPropsAsDict().get('reactant_idx')
-            amap.append(atom_info(r_idx, r_aidx, p_idx, p_aidx, a.GetAtomicNum()))  # all Atoms
+                # else:
+                #    r_idx = a.GetPropsAsDict().get('reactant_idx')
+                amap.append(atom_info(r_idx, r_aidx, p_idx, p_aidx, a.GetAtomicNum()))  # all Atoms
     return amap, ra_dict
 
 
@@ -83,6 +86,7 @@ def bond_map(reactants, products, reaction):
     res = []
     for ir, r in enumerate(reactants):
         for bond in r.GetBonds():  # exist in reactants, but not in production
+            a_pid = b_pid = None
             a, b, t = bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), bond.GetBondType()
             for atom in amap:
                 if atom.reactant_id == ir:
@@ -92,6 +96,8 @@ def bond_map(reactants, products, reaction):
                     if atom.reactant_atom_id == b:
                         b_pid = atom.product_id
                         b_paid = atom.product_atom_id
+            if a_pid is None or b_pid is None:
+                continue
             if a_pid == b_pid:
                 p_bond = products[a_pid].GetBondBetweenAtoms(a_paid, b_paid)
                 if p_bond is None:
@@ -99,6 +105,7 @@ def bond_map(reactants, products, reaction):
 
     for ip, p in enumerate(products):
         for bond in p.GetBonds():  # exist in productions, compare with reactants
+            a_rid = b_rid = None
             a, b, t = bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), bond.GetBondType()
             for atom in amap:
                 if atom.product_id == ip:
@@ -108,6 +115,8 @@ def bond_map(reactants, products, reaction):
                     if atom.product_atom_id == b:
                         b_rid = atom.reactant_id
                         b_raid = atom.reactant_atom_id
+            if a_rid is None or b_rid is None:
+                continue
             if a_rid != b_rid:
                 res.append(bond_info(ip, (a, b), (a_rid, b_rid), (a_raid, b_raid), t, 'new'))
             if a_rid == b_rid:

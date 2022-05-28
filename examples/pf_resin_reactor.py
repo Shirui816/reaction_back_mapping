@@ -3,6 +3,9 @@ from rdkit.Chem import rdChemReactions
 
 from lib.reactor.reactor import Reactor
 
+# all atoms in SMARTS being reacting atoms is dangerous, e.g., o- and meta- positions may be shadowed by para-position
+# reactions on benzene.
+
 reaction_templates = {
     ('A', 'B', 'A'): rdChemReactions.ReactionFromSmarts(
         "[O:1][c:2][c:3].[C:8]=[O:9].[O:10][c:11][c:12]>>[O:1][c:2][c:3][C:8][c:12][c:11][O:10].[O:9]"
