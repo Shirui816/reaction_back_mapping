@@ -4,7 +4,8 @@ from collections import namedtuple
 # according to bonds
 
 description = """May shadow the meta-position on benzene, if para-position reaction happens first, the reacting atoms
-contains meta-position (and o-position) C if all atoms in reaction SMARTS are reacting atoms.
+contains meta-position (and o-position) C if all atoms in reaction SMARTS are reacting atoms. This ver now can handle
+cases where SMARTS contains non-reacting atoms.
 """
 
 atom_info = namedtuple('atom_info',

@@ -4,6 +4,7 @@ from lib.reactions.mapping import map_reacting_atoms
 
 # TODO: map on reacting atoms only and ignore the non-reacting atoms.
 # Try update the bond map function.
+# This is a scratch.
 
 
 atom_info = namedtuple('atom_info',
