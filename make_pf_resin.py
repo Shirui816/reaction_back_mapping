@@ -1,6 +1,7 @@
 from copy import deepcopy
 from multiprocessing import Process
 
+import numpy as np
 from rdkit import Chem
 
 from examples.pf_resin_reactor import ReactorPFResin
@@ -30,7 +31,8 @@ for monomer in cg_sys.nodes:
             reactions.append((('A', 'B'), l, monomer))
 aa_sys, meta = reactor.process(cg_sys, reactions)
 aa_mols = [deepcopy(_) for _ in divide_into_molecules(aa_sys)]
-[Chem.SanitizeMol(_) for _ in aa_mols]
+_s = [Chem.SanitizeMol(_) for _ in aa_mols]
+assert np.allclose(_s, 0)
 aa_mols_h = [Chem.AddHs(m) for m in aa_mols]
 aa_mols_h = [set_molecule_id_for_h(mh) for mh in aa_mols_h]
 job_lst = aa_mols_h
