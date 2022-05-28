@@ -98,7 +98,9 @@ def bond_map(reactants, products, reaction):
                         b_paid = atom.product_atom_id
             if a_pid is None or b_pid is None:
                 continue
-            if a_pid == b_pid:
+            if a_pid != b_pid:  # bonds in reactant but not in same production
+                res.append(bond_info(a_pid, (a_paid, b_paid), (ir, ir), (a, b), t, 'deleted'))
+            if a_pid == b_pid:  # bonds in reactant but not in production
                 p_bond = products[a_pid].GetBondBetweenAtoms(a_paid, b_paid)
                 if p_bond is None:
                     res.append(bond_info(a_pid, (a_paid, b_paid), (ir, ir), (a, b), t, 'deleted'))
@@ -117,13 +119,13 @@ def bond_map(reactants, products, reaction):
                         b_raid = atom.reactant_atom_id
             if a_rid is None or b_rid is None:
                 continue
-            if a_rid != b_rid:
+            if a_rid != b_rid:  # bond from different reactants but in same production
                 res.append(bond_info(ip, (a, b), (a_rid, b_rid), (a_raid, b_raid), t, 'new'))
-            if a_rid == b_rid:
+            if a_rid == b_rid:  # bond not seen in reactant
                 r_bond = reactants[a_rid].GetBondBetweenAtoms(a_raid, b_raid)
                 if r_bond is None:
                     res.append(bond_info(ip, (a, b), (a_rid, b_rid), (a_raid, b_raid), t, 'new'))
-                else:
+                else:  # bond in product with different bond type from reactant
                     if r_bond.GetBondType() != t:
                         res.append(bond_info(ip, (a, b), (a_rid, b_rid), (a_raid, b_raid), t, 'changed'))
     return res
