@@ -12,7 +12,7 @@ from lib.reactor.utils import set_molecule_id_for_h
 from lib.writer.xml_writer import write_xml
 
 description = """PI maker
-tests/pfr: python ../../make_pi.py -X monomer_pi.xml -M 'A,A,Oc1ccccc1' 'B,B,C=O' -F opls
+tests/pfr: python ../../make_pf_resin.py -M 'A,A,Oc1ccccc1' 'B,B,C=O' -F opls -X monomerpfr.xml
 Parallel over molecules.
 Therefore parallelization is not important if whole system is one huge molecule.
 """
