@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+from rdkit.Chem import rdChemReactions
+
 # No need to manually change atom type, e.g., is_aromatic, etc. Chem.SanitizeMol will set atom type automatically
 # according to bonds
 
@@ -76,7 +78,7 @@ def atom_map(products, reaction):
     return amap, reacting_atoms
 
 
-def bond_map(reactants, products, reaction):
+def bond_map(reactants: list, products: list, reaction: rdChemReactions.ChemicalReaction) -> list:
     r"""Map bonds between reactants and products
     :param reactants: list of reactants
     :param products:  list of products
