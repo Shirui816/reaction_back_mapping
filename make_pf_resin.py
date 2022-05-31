@@ -25,7 +25,6 @@ E.G., for pf resins, reactions may happen on meta-position or para-position of t
 Therefore, for certain monomer combination, probability is used for choosing reaction.
 needed production ids is a list of ints or None, if None, atoms from all products are preserved.
 e.g., A+B->C+D, if D is unwanted, set needed production ids = [0]
-The reaction
 """
 
 reaction_templates = {

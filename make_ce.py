@@ -11,7 +11,7 @@ from lib.writer.xml_writer import write_xml
 
 __doc__ = """CE maker
 tests/ce: python ../../make_ce.py -X monomerCG.xml -M 'A,A,c1cc(OC#N)ccc1C(C)(C)c1ccc(OC#N)cc1' -F opls
-(reaction_type: (reaction, probability, needed production ids))
+{reaction_type: {reactants_tuple: tuple, reactions: [(reaction, probability, needed production ids),...]}
 """
 
 reaction_templates = {

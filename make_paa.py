@@ -11,7 +11,7 @@ from lib.writer.xml_writer import write_xml
 
 __doc__ = """PAA maker
 tests/ce: python ../../make_paa.py -X monomerCG.xml -M 'A,C#Cc1cccc(C#C)c1' -F opls
-(reaction_type: (reaction, probability, needed production ids))
+{reaction_type: {reactants_tuple: tuple, reactions: [(reaction, probability, needed production ids),...]}
 """
 
 reaction_templates = {
