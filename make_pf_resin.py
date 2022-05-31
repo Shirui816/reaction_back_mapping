@@ -16,27 +16,47 @@ __doc__ = """pf resin maker
 tests/pfr: python ../../make_pf_resin_deprecated.py -M 'A,A,Oc1ccccc1' 'B,B,C=O' -F opls -X monomerpfr.xml
 Parallel over molecules.
 Therefore parallelization is not important if whole system is one huge molecule.
-(reaction_type: (reaction, probability, needed production ids))
-for pf resins, reactions may happen on meta-position or para-position of the Ar ring.
+reaction templates:
+{reaction_type: {reactants_tuple: tuple, reactions: [(reaction, probability, needed production ids),...]}
+for CG molecule A-B-A, different class of reactions may take place, thus reaction_type may be
+(A, B, A), (A1, B1, A1),... etc. reactants_tuple is set to identify the molecules/
+I'll use reaction_type (tuple) as reactants_tuple if it's blank
+E.G., for pf resins, reactions may happen on meta-position or para-position of the Ar ring.
 Therefore, for certain monomer combination, probability is used for choosing reaction.
+needed production ids is a list of ints or None, if None, atoms from all products are preserved.
+e.g., A+B->C+D, if D is unwanted, set needed production ids = [0]
+The reaction
 """
 
 reaction_templates = {
-    ('A', 'B', 'A'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[O:1][c:2][c:3].[C:8]=[O:9].[O:10][c:11][c:12]>>[O:1][c:2][c:3][C:8][c:12][c:11][O:10].[O:9]"
-        ), 1.0, [0])
-    ],
-    ('A', 'B'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[O:1][c:2][c:3].[C:8]=[O:9]>>[O:1][c:2][c:3][C:8][O:9]"
-        ), 1.0, [0])
-    ],
-    ('B', 'A'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[C:8]=[O:9].[O:1][c:2][c:3]>>[O:1][c:2][c:3][C:8][O:9]"
-        ), 1.0, [0])
-    ]
+    # reaction type may be different from reactants_tuple, represents the class of reactions
+    # i.e., same CG monomer combination can have different CLASS of reactions.
+    # same CLASS of reactions have probabilities summing to 1, e.g., reaction on meta- or para- positions
+    ('A', 'B', 'A'): {  # reaction type, name of reaction.
+        'reactants_tuple': ('A', 'B', 'A'),  # tuple of types of CG molecules, if not given, use reaction type instead
+        'reactions':
+            [
+                (rdChemReactions.ReactionFromSmarts(
+                    "[O:1][c:2][c:3].[C:8]=[O:9].[O:10][c:11][c:12]>>[O:1][c:2][c:3][C:8][c:12][c:11][O:10].[O:9]"
+                ), 1.0, [0])
+            ]
+    },
+    ('A', 'B'): {
+        'reactions':
+            [
+                (rdChemReactions.ReactionFromSmarts(
+                    "[O:1][c:2][c:3].[C:8]=[O:9]>>[O:1][c:2][c:3][C:8][O:9]"
+                ), 1.0, [0])
+            ]
+    },
+    ('B', 'A'): {
+        'reactions':
+            [
+                (rdChemReactions.ReactionFromSmarts(
+                    "[C:8]=[O:9].[O:1][c:2][c:3]>>[O:1][c:2][c:3][C:8][O:9]"
+                ), 1.0, [0])
+            ]
+    }
 }
 
 cg_sys, cg_mols, monomers, box, xml = parse()

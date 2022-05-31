@@ -6,25 +6,26 @@ from lib.reactions.mapping import process_reactants, atom_map, bond_map
 
 
 class Reactions(object):
-    def __init__(self, reaction_type, reaction_meta):
+    def __init__(self, reaction_type, reactants_tuple, reaction_meta):
         self.reaction_type = reaction_type
         self.reaction_meta = reaction_meta
-        self.index = list(range(len(reaction_meta)))
-        prob = [_[1] for _ in reaction_meta]
+        self.reactants_tuple = reactants_tuple
+        self.index = list(range(len(reaction_meta['reactions'])))
+        prob = [_[1] for _ in reaction_meta['reactions']]
         self.prob = np.array(prob) / sum(prob)
         self.reaction_maps = {}
         self.product_idx = {}
         self.all_reactions = set(self.index)
         for idx in self.index:
             self.reaction_maps[idx] = []
-            self.product_idx[idx] = reaction_meta[idx][-1]
+            self.product_idx[idx] = reaction_meta['reactions'][idx][-1]
 
     def process(self, reactants_meta):
         for idx in self.index:
-            meta = self.reaction_meta[idx]
+            meta = self.reaction_meta['reactions'][idx]
             reaction = meta[0]
             molecules = []
-            for t in self.reaction_type:
+            for t in self.reactants_tuple:
                 molecules.append(Chem.MolFromSmiles(reactants_meta[t]['smiles']))
             reactants = process_reactants(molecules)  # new copy of molecules every time
             products = reaction.RunReactants(reactants)
@@ -71,7 +72,14 @@ class Reactor(object):
         self.meta = nx.Graph()
         self.reaction_templates = {}
         for reaction_type in reaction_templates:
-            self.reaction_templates[reaction_type] = Reactions(reaction_type, reaction_templates[reaction_type])
+            reactants_tuple = reaction_templates[reaction_type].get("reactants_tuple")
+            if not reactants_tuple:
+                reactants_tuple = reaction_type
+            self.reaction_templates[reaction_type] = Reactions(
+                reaction_type,
+                reactants_tuple,
+                reaction_templates[reaction_type]
+            )
             self.reaction_templates[reaction_type].process(reactants_meta)
 
     def process(self, cg_system, reactions):

@@ -15,15 +15,23 @@ tests/ce: python ../../make_ce.py -X monomerCG.xml -M 'A,A,c1cc(OC#N)ccc1C(C)(C)
 """
 
 reaction_templates = {
-    ('A', 'A'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[C:1]#[N:2].[C:3]#[N:4]>>[C:1]=[N:2][C:3]=[N:4]"
-        ), 1.0, None)
-    ],
-    ('A', 'A', 'A'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[C:1]#[N:2].[C:3]#[N:4].[C:5]#[N:6]>>[c:1]1[n:2][c:3][n:4][c:5][n:6]1"
-        ), 1.0, None)]
+    ('A', 'A'): {
+        'reactants_tuple': ('A', 'A'),
+        'reactions':
+            [
+                (rdChemReactions.ReactionFromSmarts(
+                    "[C:1]#[N:2].[C:3]#[N:4]>>[C:1]=[N:2][C:3]=[N:4]"
+                ), 1.0, None)
+            ],
+    },
+    ('A', 'A', 'A'): {
+        'reactions':
+            [
+                (rdChemReactions.ReactionFromSmarts(
+                    "[C:1]#[N:2].[C:3]#[N:4].[C:5]#[N:6]>>[c:1]1[n:2][c:3][n:4][c:5][n:6]1"
+                ), 1.0, None)
+            ]
+    }
 }
 
 cg_sys, cg_mols, monomers, box, xml = parse()
