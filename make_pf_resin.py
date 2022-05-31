@@ -79,7 +79,7 @@ aa_mols_h = [Chem.AddHs(m) for m in aa_mols]
 aa_mols_h = [set_molecule_id_for_h(mh) for mh in aa_mols_h]
 job_lst = aa_mols_h
 
-defaults = {"O": "@atom:178", "N": "@atom:239"}
+defaults = {"O": "@atom:178"}
 
 
 def processing(i):

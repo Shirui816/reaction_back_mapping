@@ -49,7 +49,7 @@ aa_mols = list(Chem.rdmolops.GetMolFrags(aa_sys, asMols=True))
 aa_mols_h = [Chem.AddHs(m) for m in aa_mols]
 aa_mols_h = [set_molecule_id_for_h(mh) for mh in aa_mols_h]
 
-defaults = {"O": "@atom:122", "N": "@atom:708"}
+defaults = {"O": "@atom:122"}
 
 
 def processing(i):
