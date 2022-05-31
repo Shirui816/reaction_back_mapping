@@ -18,7 +18,7 @@ def parse():
     # monomer_name is dump, it should be found automatically.
     arg_parser.add_argument('-M', '--molecules',
                             nargs='+',
-                            help="molecules with <cg_type>,<monomer_name>,<smiles>...",
+                            help="molecules with <cg_type>,<smiles>...",
                             dest="molecules",
                             type=str,
                             metavar='<cg_type>,<molecule_name>,<smiles>;',
