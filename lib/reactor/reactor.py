@@ -164,7 +164,7 @@ class Reactor(object):
             molecule = self.meta.nodes[m]
             for idx in molecule['atom_idx'].values():
                 atom = self.aa_system.GetAtomWithIdx(idx)
-                atom.SetIntProp('molecule_id', m)
+                atom.SetIntProp('molecule_id', int(m))
             rm_all.extend(list(molecule['rm_atoms']))
 
         rm_all = sorted(list(set(rm_all)), reverse=True)

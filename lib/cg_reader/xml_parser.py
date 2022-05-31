@@ -1,7 +1,10 @@
 from io import StringIO
 from xml.etree import cElementTree
 
-import pandas as pd
+import numpy as np
+
+
+# import pandas as pd
 
 
 class Box(object):
@@ -15,7 +18,7 @@ class Box(object):
         self.__dict__.update(dic)
 
 
-class xml_parser(object):
+class XmlParser(object):
     def __init__(self, filename, needed=None):
         tree = cElementTree.ElementTree(file=filename)
         root = tree.getroot()
@@ -30,7 +33,8 @@ class xml_parser(object):
                 continue
             if (len(needed) > 0) and (element.tag not in needed):
                 continue
-            self.data[element.tag] = pd.read_csv(StringIO(element.text),
-                                                 delim_whitespace=True,
-                                                 header=None,
-                                                 ).squeeze("columns").values
+            # self.data[element.tag] = pd.read_csv(StringIO(element.text),
+            #                                    delim_whitespace=True,
+            #                                    header=None,
+            #                                    ).squeeze("columns").values
+            self.data[element.tag] = np.genfromtxt(StringIO(element.text), dtype=None, encoding=None)

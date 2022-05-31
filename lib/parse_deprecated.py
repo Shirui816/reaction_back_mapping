@@ -1,6 +1,6 @@
 import argparse
 
-from lib.cg_reader.xml_parser import xml_parser
+from lib.cg_reader.xml_parser import XmlParser
 from lib.topology.cg_top import read_cg_topology
 
 description = """Backmap CG polymer simulations to AA.
@@ -54,7 +54,7 @@ def parse():
         molecules[molecule[0]]['reaction_type'] = molecule[1]
     # TODO: autodetect monomer and automatically choose reactions using SMARTS.
 
-    xml = xml_parser(args.xml_file)
+    xml = XmlParser(args.xml_file)
     box = (xml.box.lx, xml.box.ly, xml.box.lz, xml.box.xy, xml.box.xz, xml.box.yz)
     box = tuple(map(float, box))
     cg_sys, cg_mols = read_cg_topology(xml, molecules)
