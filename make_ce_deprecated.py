@@ -1,33 +1,19 @@
 from multiprocessing import Pool
 
 from rdkit import Chem
-from rdkit.Chem import rdChemReactions
 
+from examples.ce_reactor import ReactorCE
 from lib.forcefield.opls import ff
 from lib.parse_deprecated import parse
-from lib.reactor.reactor import Reactor
 from lib.reactor.utils import set_molecule_id_for_h
 from lib.writer.xml_writer import write_xml
 
 __doc__ = """CE maker
-tests/ce: python ../../make_ce.py -X monomerCG.xml -M 'A,A,c1cc(OC#N)ccc1C(C)(C)c1ccc(OC#N)cc1' -F opls
-(reaction_type: (reaction, probability, needed production ids))
+tests/ce: python ../../make_ce_deprecated.py -X monomerCG.xml -M 'A,A,c1cc(OC#N)ccc1C(C)(C)c1ccc(OC#N)cc1' -F opls
 """
 
-reaction_templates = {
-    ('A', 'A'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[C:1]#[N:2].[C:3]#[N:4]>>[C:1]=[N:2][C:3]=[N:4]"
-        ), 1.0, None)
-    ],
-    ('A', 'A', 'A'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[C:1]#[N:2].[C:3]#[N:4].[C:5]#[N:6]>>[c:1]1[n:2][c:3][n:4][c:5][n:6]1"
-        ), 1.0, None)]
-}
-
 cg_sys, cg_mols, monomers, box, xml = parse()
-reactor = Reactor(monomers, reaction_templates)
+reactor = ReactorCE(monomers)
 dimers = xml.data.get("di")
 trimers = xml.data.get('tri')
 reactions = []

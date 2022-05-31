@@ -1,7 +1,7 @@
 from rdkit import Chem
 from rdkit.Chem import rdChemReactions
 
-from lib.reactor.reactor import Reactor
+from lib.reactor.reactor_deprecated import Reactor
 
 # all atoms in SMARTS being reacting atoms is dangerous, e.g., o- and meta- positions may be shadowed by para-position
 # reactions on benzene.

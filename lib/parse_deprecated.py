@@ -50,7 +50,8 @@ def parse():
         while '' in molecule:
             molecule.remove('')
         molecules[molecule[0]] = {}
-        molecules[molecule[0]]['smiles'] = molecule[-1]  # no need for reaction type in new version
+        molecules[molecule[0]]['smiles'] = molecule[-1]
+        molecules[molecule[0]]['reaction_type'] = molecule[1]
     # TODO: autodetect monomer and automatically choose reactions using SMARTS.
 
     xml = xml_parser(args.xml_file)

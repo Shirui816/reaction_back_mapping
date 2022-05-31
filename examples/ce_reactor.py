@@ -1,7 +1,7 @@
 from rdkit import Chem
 from rdkit.Chem import rdChemReactions
 
-from lib.reactor.reactor import Reactor
+from lib.reactor.reactor_deprecated import Reactor
 
 reaction_templates = {
     ('A', 'A'): rdChemReactions.ReactionFromSmarts(

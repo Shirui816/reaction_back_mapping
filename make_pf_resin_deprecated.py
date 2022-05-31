@@ -3,11 +3,10 @@ from multiprocessing import Process
 
 import numpy as np
 from rdkit import Chem
-from rdkit.Chem import rdChemReactions
 
+from examples.pf_resin_reactor import ReactorPFResin
 from lib.forcefield.opls import ff
 from lib.parse_deprecated import parse
-from lib.reactor.reactor import Reactor
 from lib.reactor.utils import divide_into_molecules
 from lib.reactor.utils import set_molecule_id_for_h
 from lib.writer.xml_writer import write_xml
@@ -18,26 +17,8 @@ Parallel over molecules.
 Therefore parallelization is not important if whole system is one huge molecule.
 """
 
-reaction_templates = {
-    ('A', 'B', 'A'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[O:1][c:2][c:3].[C:8]=[O:9].[O:10][c:11][c:12]>>[O:1][c:2][c:3][C:8][c:12][c:11][O:10].[O:9]"
-        ), 1.0, [0])
-    ],
-    ('A', 'B'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[O:1][c:2][c:3].[C:8]=[O:9]>>[O:1][c:2][c:3][C:8][O:9]"
-        ), 1.0, [0])
-    ],
-    ('B', 'A'): [
-        (rdChemReactions.ReactionFromSmarts(
-            "[C:8]=[O:9].[O:1][c:2][c:3]>>[O:1][c:2][c:3][C:8][O:9]"
-        ), 1.0, [0])
-    ]
-}
-
 cg_sys, cg_mols, monomers, box, xml = parse()
-reactor = Reactor(monomers, reaction_templates)
+reactor = ReactorPFResin(monomers)
 
 reactions = []
 for monomer in cg_sys.nodes:

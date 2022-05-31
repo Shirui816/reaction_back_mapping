@@ -82,11 +82,11 @@ def ff(molecule, **kwargs):
                   "Chemical env of atom {0}({1}) is\n\t{2}\nType is not found from database, set manually as\n\t{3}"
             # default = input("Enter default atom type (@atom:xxx): ")
             # at.SetProp("AtomType", default)
-            s = "*** NO DEFAULT TYPE ***"
+            s = "*** NO DEFAULT TYPE ***\n"
             if not defaults is None:
                 if not defaults.get(atom.GetSymbol()) is None:
-                    atom.SetProp("AtomType", defaults.get("O"))
-                    dt = defaults.get("O")
+                    atom.SetProp("AtomType", defaults.get(atom.GetSymbol()))
+                    dt = defaults.get(atom.GetSymbol())
                     s = info[dt][0] + ", " + info[dt][3]
             print(msg.format(atom.GetIdx(), atom.GetSymbol(), smiles, s))
 
