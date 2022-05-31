@@ -2,7 +2,7 @@ from multiprocessing import Pool
 
 from rdkit import Chem
 
-from examples.ce_reactor import ReactorCE
+from examples_deprecated.ce_reactor import ReactorCE
 from lib.forcefield.opls import ff
 from lib.parse_deprecated import parse
 from lib.reactor.utils import set_molecule_id_for_h

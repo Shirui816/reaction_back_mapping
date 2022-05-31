@@ -3,7 +3,7 @@ from multiprocessing import Process
 
 from rdkit import Chem
 
-from examples.pi_reactor import ReactorPI
+from examples_deprecated.pi_reactor import ReactorPI
 from lib.forcefield.opls import ff
 from lib.parse_deprecated import parse
 from lib.reactor.utils import divide_into_molecules

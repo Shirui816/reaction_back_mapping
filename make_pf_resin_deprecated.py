@@ -4,7 +4,7 @@ from multiprocessing import Process
 import numpy as np
 from rdkit import Chem
 
-from examples.pf_resin_reactor import ReactorPFResin
+from examples_deprecated.pf_resin_reactor import ReactorPFResin
 from lib.forcefield.opls import ff
 from lib.parse_deprecated import parse
 from lib.reactor.utils import divide_into_molecules
