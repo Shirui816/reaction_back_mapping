@@ -9,8 +9,8 @@ from lib.reactor.reactor import Reactor
 from lib.reactor.utils import set_molecule_id_for_h
 from lib.writer.xml_writer import write_xml
 
-__doc__ = """CE maker
-tests/ce: python ../../make_ce.py -X monomerCG.xml -M 'A,c1cc(OC#N)ccc1C(C)(C)c1ccc(OC#N)cc1' -F opls
+__doc__ = """PAA maker
+tests/ce: python ../../make_ce.py -X monomerCG.xml -M 'A,C#Cc1cccc(C#C)c1' -F opls
 (reaction_type: (reaction, probability, needed production ids))
 """
 
