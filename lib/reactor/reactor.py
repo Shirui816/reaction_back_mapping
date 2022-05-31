@@ -51,11 +51,12 @@ def allowed_p(reacted_atoms, reactions):
         for reaction_map in reaction_maps:
             allowed = True
             for ri in reaction_map[0]:
-                if set.issubset(set(reaction_map[0][ri]), reacted_atoms[ri]):
+                if set.issubset(set(reaction_map[0][ri]), reacted_atoms[ri]):  # only idle function groups
+                    # multi-step reactions are considered as reactions with all reactants in one step.
                     allowed = False
             if allowed:
                 return reaction_map, product_idx
-    return None, None
+    return None, None  # if no available reaction is chosen.
 
 
 class Reactor(object):

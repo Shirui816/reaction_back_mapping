@@ -16,6 +16,9 @@ __doc__ = """pf resin maker
 tests/pfr: python ../../make_pf_resin_deprecated.py -M 'A,A,Oc1ccccc1' 'B,B,C=O' -F opls -X monomerpfr.xml
 Parallel over molecules.
 Therefore parallelization is not important if whole system is one huge molecule.
+(reaction_type: (reaction, probability, needed production ids))
+for pf resins, reactions may happen on meta-position or para-position of the Ar ring.
+Therefore, for certain monomer combination, probability is used for choosing reaction.
 """
 
 reaction_templates = {
