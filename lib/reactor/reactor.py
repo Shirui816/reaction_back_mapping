@@ -45,6 +45,10 @@ class Reactions(object):
                 self.reaction_maps[idx].append((reacting_atoms, amap, bmap))
 
     def choose(self, idx=None):
+        r"""Randomly choose a reaction according to given probability.
+        :param idx: int, index of reaction
+        :return: index of reaction, the chosen reaction map, needed production ids
+        """
         if idx is None:
             idx = np.random.choice(self.index, p=self.prob)
         return idx, self.reaction_maps[idx], self.product_idx[idx]
