@@ -10,7 +10,7 @@ from lib.reactor.utils import set_molecule_id_for_h
 from lib.writer.xml_writer import write_xml
 
 __doc__ = """PAA maker
-tests/ce: python ../../make_paa.py -X monomerCG.xml -M 'A,C#Cc1cccc(C#C)c1' -F opls
+tests/paa: python ../../make_paa.py -X monomerCG.xml -M 'A,C#Cc1cccc(C#C)c1' -F opls
 {reaction_type: {reactants_tuple: tuple, reactions: [(reaction, probability, needed production ids),...]}
 """
 
@@ -28,11 +28,15 @@ reaction_templates = {
         'reactions':
             [
                 (rdChemReactions.ReactionFromSmarts(
-                    "[C:1]#[C:2].[C:3]#[C:4].[C:5]#[C:6]>>[c:1]1[c:2][c:3][c:4][c:5][c:6]1"
+                    "[C:1]#[C:2]a.[C:3]#[C:4]a.[C:5]#[C:6]a>>[c:1]1[c:2](a)[c:3][c:4](a)[c:5][c:6]1a"
                 ), 1.0, None)
             ]
     }
 }
+
+# [C:1]#[C:2]a.[C:3]#[C:4]a.[C:5]#[C:6]a>>[c:1]1[c:2](a)[c:3][c:4](a)[c:5][c:6]1a
+# [C:1]#[C:2]c1cccc(C#C)c1.[C:3]#[C:4]c1cccc(C#C)c1.[C:5]#[C:6]c1cccc(C#C)c1>>C#Cc4cccc([c:2]3[c:1][c:4]
+# (c1cccc(C#C)c1)[c:3][c:6](c2cccc(C#C)c2)[c:5]3)c4
 
 cg_sys, cg_mols, monomers, box, xml = parse()
 reactor = Reactor(monomers, reaction_templates)
