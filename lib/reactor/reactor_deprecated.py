@@ -5,6 +5,9 @@ from rdkit import Chem
 
 from lib.reactions.mapping import process_reactants, atom_map, bond_map
 
+__doc__ = """Deprecated, newer and more generalized method is build. However, this method are more flexible
+"dirty" ways for complex systems.
+"""
 
 class Reactor(metaclass=ABCMeta):
     def __init__(self, reactants, reaction_templates):

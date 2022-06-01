@@ -5,7 +5,7 @@ from rdkit.Chem import rdChemReactions
 # No need to manually change atom type, e.g., is_aromatic, etc. Chem.SanitizeMol will set atom type automatically
 # according to bonds
 
-description = """May shadow the meta-position on benzene, if para-position reaction happens first, the reacting atoms
+__doc__ = """May shadow the meta-position on benzene, if para-position reaction happens first, the reacting atoms
 contains meta-position (and o-position) C if all atoms in reaction SMARTS are reacting atoms. This ver now can handle
 cases where SMARTS contains non-reacting atoms.
 """
@@ -28,7 +28,7 @@ def process_reactants(reactants):
 
 
 def map_reacting_atoms(reaction):
-    r"""
+    r"""Get reacting atoms.
     :param reaction: Reaction object
     :return: dict, reacting atoms: reactant index
     """
@@ -43,7 +43,7 @@ def map_reacting_atoms(reaction):
 
 
 def map_atoms(products, reacting_map):
-    r"""
+    r"""Mapping Reacting Atoms only
     :param products:  list of products
     :param reacting_map: reacting atom map
     :return: atom map and reacting atoms
